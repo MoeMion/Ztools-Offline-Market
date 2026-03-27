@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    {
+      "pluginName": "demo-plugin",
+      "version": "1.0.0",
+      "pluginFile": "demo-plugin-1.0.0.zip",
+      "url": "https://github.com/ZToolsCenter/ZTools-plugins/releases/download/v2099.01.01.0000/demo-plugin-1.0.0.zip"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+services:
+  ztools-market:
+    image: nginx:alpine
+    container_name: ztools-market
+    ports:
+      - "18080:80"
+    volumes:
+      - ./market-data:/usr/share/nginx/html:ro
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf:ro
