@@ -1,88 +1,88 @@
-# Z-Tools Offline Market
+# Z-Tools 离线插件市场
 
-A Python-based packager for building a fully static offline mirror of the Z-Tools plugin market without modifying the Z-Tools client.
+构建可离线部署的 Z-Tools 插件市场静态镜像。
 
-## What it does
+## 功能说明
 
-- resolves the latest release tag automatically or uses a tag you provide
-- downloads release metadata and plugin archives
-- clears stale package output before each rebuild
-- mirrors plugin README files when available
-- mirrors downloadable README image assets and rewrites README links to local paths when possible
-- rewrites exposed plugin, category, README, and source-manifest URLs to local offline paths when possible
-- keeps failed external image downloads as original URLs so packaging can continue
-- builds a static `market-data` tree compatible with the client
-- serves the result with nginx through Docker Compose
+- 自动解析最新 release tag，或使用手动指定的 tag
+- 下载发布元数据和插件压缩包
+- 每次重新构建前自动清理旧的输出目录
+- 在可用时镜像插件 README 文件
+- 镜像 README 中可下载的图片资源，并尽可能将 README 内的图片链接改写为本地路径
+- 尽可能将插件、分类、README 和 source manifest 中暴露出的 URL 重写为本地离线路径
+- 当某些外部图片下载失败时，保留原始外链，避免打包中断
+- 构建与客户端兼容的静态 `market-data` 目录树
+- 通过 Docker Compose + nginx 提供静态访问服务
 
-## Quick start
+## 快速开始
 
-Package the market in one Python command:
+使用一条 Python 命令打包市场：
 
 ```bash
 python scripts/ztools_offline_market.py package --base-url http://127.0.0.1:18080
 ```
 
-Serve it in one Docker command:
+使用一条 Docker 命令启动服务：
 
 ```bash
 docker compose up -d --force-recreate
 ```
 
-## Common usage
+## 常见用法
 
-Use the latest upstream release:
+使用上游最新 release：
 
 ```bash
 python scripts/ztools_offline_market.py package --base-url http://127.0.0.1:18080
 ```
 
-Use a specific tag:
+使用指定 tag：
 
 ```bash
 python scripts/ztools_offline_market.py package --tag v2026.03.23.1338 --base-url http://127.0.0.1:18080
 ```
 
-Write output to a custom directory:
+输出到自定义目录：
 
 ```bash
 python scripts/ztools_offline_market.py package --base-url http://127.0.0.1:18080 --output custom-market-data
 ```
 
-## Repository layout
+## 仓库结构
 
 ```text
 scripts/
-  ztools_offline_market.py   Main CLI
+  ztools_offline_market.py   主 CLI 脚本
 
 tests/
-  test_build.py              Build and package tests
-  test_pull.py               Pull and README mirroring tests
-  test_verify.py             Output verification tests
+  test_build.py              构建与打包测试
+  test_pull.py               拉取与 README 镜像测试
+  test_verify.py             输出校验测试
 
 docker/
-  nginx.conf                 Static nginx config
+  nginx.conf                 静态 nginx 配置
 
 fixtures/
-  sample_release/            Minimal fixture data for tests
+  sample_release/            最小测试样例数据
 
 docs/
-  operations.md              Detailed operations guide
+  operations.md              详细操作说明
 ```
 
-## CLI commands
+## CLI 命令
 
-- `package` — one-command workflow for pull + README mirroring + build + verify
-- `pull` — download source release assets into a local directory
-- `build` — build a publishable static market tree from a source directory
-- `verify` — verify a generated market tree
+- `package` —— 一条命令完成 pull + README 镜像 + build + verify
+- `pull` —— 下载上游 release 资源到本地目录
+- `build` —— 从输入目录构建可发布的静态市场目录
+- `verify` —— 校验生成后的市场目录结构
 
-## Notes
+## 说明
 
-- The default output directory is `market-data`.
-- When `--tag` is omitted, the tool resolves the latest upstream release automatically.
-- Docker serves files from `./market-data`, so if you use a custom output directory you should update `docker-compose.yml` or rename the output directory.
-- See `docs/operations.md` for the full operational workflow.
+- 默认输出目录为 `market-data`。
+- 当省略 `--tag` 时，工具会自动解析上游最新 release tag。
+- Docker 默认从 `./market-data` 提供静态文件；如果使用自定义输出目录，请同步修改 `docker-compose.yml` 或重命名输出目录。
+- 完整操作流程见 `docs/operations.md`。
 
-## Vibe Coding Alert
+## Vibe Coding 警告
 
-This repository is completely built with Claude Code. 请自行承担可能存在的任何风险。 
+本仓库完全由 Claude Code 生成，请自行评估并承担使用风险。
